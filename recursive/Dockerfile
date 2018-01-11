@@ -48,6 +48,5 @@ COPY --from=builder /etc/pdns-recursor /etc/pdns-recursor/
 
 RUN cp -p /etc/pdns-recursor/recursor.conf-dist /etc/pdns-recursor/recursor.conf
 
-EXPOSE 53/tcp 53/udp
 ENTRYPOINT ["/usr/local/sbin/pdns_recursor"]
 CMD ["--help"]

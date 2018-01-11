@@ -45,6 +45,5 @@ RUN addgroup -S dnsdist && \
 COPY --from=builder /usr/local/bin /usr/local/bin/
 COPY --from=builder /usr/share/man/man1 /usr/share/man/man1/
 
-EXPOSE 53/tcp 53/udp
 ENTRYPOINT ["/usr/local/bin/dnsdist"]
 CMD ["--help"]

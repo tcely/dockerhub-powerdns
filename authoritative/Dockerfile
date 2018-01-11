@@ -54,6 +54,5 @@ COPY --from=builder /etc/pdns /etc/pdns/
 
 RUN cp -p /etc/pdns/pdns.conf-dist /etc/pdns/pdns.conf
 
-EXPOSE 53/tcp 53/udp
 ENTRYPOINT ["/usr/local/sbin/pdns_server"]
 CMD ["--help"]
