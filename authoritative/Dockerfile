@@ -29,7 +29,7 @@ RUN apk --update upgrade && \
             --with-modules='bind gsqlite3' \
             --with-dynmodules='gmysql gpgsql lua pipe random remote' && \
         make -j 2 && \
-        make install \
+        make install-strip \
     ) && \
     apk del --purge .build-depends && rm -rf /var/cache/apk/*
 

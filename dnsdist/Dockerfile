@@ -26,7 +26,7 @@ RUN apk --update upgrade && \
         ./configure --sysconfdir=/etc/dnsdist --mandir=/usr/share/man \
             --enable-dnscrypt --enable-libsodium --enable-re2 --with-net-snmp && \
         make -j 2 && \
-        make install \
+        make install-strip \
     ) && \
     apk del --purge .build-depends && rm -rf /var/cache/apk/*
 

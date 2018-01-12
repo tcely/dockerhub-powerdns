@@ -25,7 +25,7 @@ RUN apk --update upgrade && \
         ./configure --sysconfdir=/etc/pdns-recursor --mandir=/usr/share/man \
             && \
         make -j 2 && \
-        make install \
+        make install-strip \
     ) && \
     apk del --purge .build-depends && rm -rf /var/cache/apk/*
 
