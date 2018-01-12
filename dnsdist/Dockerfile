@@ -7,11 +7,11 @@ ARG DNSDIST_VERSION
 ARG EXTRA_KEY
 
 RUN apk --update upgrade && \
-    apk add ca-certificates && \
+    apk add ca-certificates curl && \
     apk add --virtual .build-depends \
-      curl gnupg \
-      file g++ make \
-      boost-dev libedit-dev libsodium-dev lua-dev net-snmp-dev protobuf-dev re2-dev && \
+      file gnupg g++ make \
+      boost-dev libressl-dev libsodium-dev lua-dev net-snmp-dev protobuf-dev \
+      libedit-dev re2-dev && \
     curl -RL -O "https://downloads.powerdns.com/releases/dnsdist-${DNSDIST_VERSION}.tar.bz2{.asc,}" && \
     curl -RL -o SigningKeys 'https://powerdns.com/powerdns-keyblock.asc' && \
     mkdir -v -m 0700 -p /root/.gnupg && \
@@ -33,8 +33,9 @@ RUN apk --update upgrade && \
 FROM alpine
 
 RUN apk --update upgrade && \
-    apk add ca-certificates \
-        boost less libedit libsodium lua man net-snmp protobuf re2 && \
+    apk add ca-certificates curl less man \
+        boost-program_options libressl libsodium lua net-snmp protobuf \
+        libedit re2 && \
     rm -rf /var/cache/apk/*
 
 ENV PAGER less

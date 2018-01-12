@@ -6,11 +6,11 @@ ARG AUTH_VERSION
 ARG EXTRA_KEY
 
 RUN apk --update upgrade && \
-    apk add ca-certificates && \
+    apk add ca-certificates curl && \
     apk add --virtual .build-depends \
-      curl gnupg \
-      file g++ make patch \
-      boost-dev libressl-dev libsodium-dev lua-dev mariadb-dev net-snmp-dev postgresql-dev protobuf-dev sqlite-dev && \
+      file gnupg g++ make patch \
+      boost-dev libressl-dev libsodium-dev lua-dev net-snmp-dev protobuf-dev \
+      mariadb-dev postgresql-dev sqlite-dev && \
     curl -RL -O "https://downloads.powerdns.com/releases/pdns-${AUTH_VERSION}.tar.bz2{.asc,}" && \
     curl -RL -o SigningKeys 'https://powerdns.com/powerdns-keyblock.asc' && \
     mkdir -v -m 0700 -p /root/.gnupg && \
@@ -36,8 +36,9 @@ RUN apk --update upgrade && \
 FROM alpine
 
 RUN apk --update upgrade && \
-    apk add ca-certificates less man \
-        boost-program_options libressl libsodium lua net-snmp protobuf sqlite-libs && \
+    apk add ca-certificates curl less man \
+        boost-program_options libressl libsodium lua net-snmp protobuf \
+        sqlite-libs && \
     rm -rf /var/cache/apk/*
 
 ENV PAGER less

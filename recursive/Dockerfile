@@ -6,11 +6,11 @@ ARG RECURSOR_VERSION
 ARG EXTRA_KEY
 
 RUN apk --update upgrade && \
-    apk add ca-certificates && \
+    apk add ca-certificates curl && \
     apk add --virtual .build-depends \
-      curl gnupg \
-      file g++ make \
-      boost-dev libsodium-dev lua-dev net-snmp-dev protobuf-dev && \
+      file gnupg g++ make \
+      boost-dev libressl-dev libsodium-dev lua-dev net-snmp-dev protobuf-dev \
+      && \
     curl -RL -O "https://downloads.powerdns.com/releases/pdns-recursor-${RECURSOR_VERSION}.tar.bz2{.asc,}" && \
     curl -RL -o SigningKeys 'https://powerdns.com/powerdns-keyblock.asc' && \
     mkdir -v -m 0700 -p /root/.gnupg && \
@@ -32,8 +32,9 @@ RUN apk --update upgrade && \
 FROM alpine
 
 RUN apk --update upgrade && \
-    apk add ca-certificates less man \
-        boost libsodium lua net-snmp protobuf && \
+    apk add ca-certificates curl less man \
+        boost-program_options libressl libsodium lua net-snmp protobuf \
+        && \
     rm -rf /var/cache/apk/*
 
 ENV PAGER less
