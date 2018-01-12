@@ -1,0 +1,18 @@
+commit f1d51ff73fe0cf9d370e51a2aef7ba38c990e17f
+Author: Remi Gacogne <remi.gacogne@powerdns.com>
+Date:   Mon Dec 4 09:41:49 2017 +0100
+
+    Add the missing <sys/time.h> include to mplexer.hh for struct timeval
+
+diff --git a/pdns/mplexer.hh b/pdns/mplexer.hh
+index 3e9c8cd..880abd1 100644
+--- a/pdns/mplexer.hh
++++ b/pdns/mplexer.hh
+@@ -30,6 +30,7 @@
+ #include <map>
+ #include <stdexcept>
+ #include <string>
++#include <sys/time.h>
+ 
+ class FDMultiplexerException : public std::runtime_error
+ {

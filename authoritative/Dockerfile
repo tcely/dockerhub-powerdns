@@ -5,6 +5,8 @@ FROM alpine AS builder
 ARG AUTH_VERSION
 ARG EXTRA_KEY
 
+ADD pdns-4.1.0-mplexer-timeh.patch.txt patch.txt
+
 RUN apk --update upgrade && \
     apk add ca-certificates curl && \
     apk add --virtual .build-depends \
@@ -22,8 +24,7 @@ RUN apk --update upgrade && \
     rm -f "pdns-${AUTH_VERSION}.tar.bz2" && \
     ( \
         cd "pdns-${AUTH_VERSION}" && \
-	curl -RL -o patch.txt 'https://gist.github.com/tcely/48cb43d0456d96d7a1d32f10ec046cb0/raw/523e9d24d4f131ea8c083114598d22a017666729/pdns-4.1.0-mplexer-timeh.patch.txt' && \
-        patch -p 1 -i patch.txt && rm -f patch.txt && \
+        patch -p 1 -i ../patch.txt && rm -f ../patch.txt && \
         ./configure --sysconfdir=/etc/pdns --mandir=/usr/share/man \
             --enable-libsodium --with-sqlite3 --enable-tools \
             --with-modules='bind gsqlite3' \
