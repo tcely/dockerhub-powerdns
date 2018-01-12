@@ -5,12 +5,10 @@ FROM alpine AS builder
 ARG AUTH_VERSION
 ARG EXTRA_KEY
 
-ADD pdns-4.1.0-mplexer-timeh.patch.txt patch.txt
-
 RUN apk --update upgrade && \
     apk add ca-certificates curl && \
     apk add --virtual .build-depends \
-      file gnupg g++ make patch \
+      file gnupg g++ make \
       boost-dev libressl-dev libsodium-dev lua-dev net-snmp-dev protobuf-dev \
       mariadb-dev postgresql-dev sqlite-dev && \
     curl -RL -O "https://downloads.powerdns.com/releases/pdns-${AUTH_VERSION}.tar.bz2{.asc,}" && \
@@ -24,7 +22,7 @@ RUN apk --update upgrade && \
     rm -f "pdns-${AUTH_VERSION}.tar.bz2" && \
     ( \
         cd "pdns-${AUTH_VERSION}" && \
-        patch -p 1 -i ../patch.txt && rm -f ../patch.txt && \
+        curl -RL -o 'pdns/mplexer.hh' 'https://github.com/PowerDNS/pdns/raw/rec-4.1.0/pdns/mplexer.hh' && \
         ./configure --sysconfdir=/etc/pdns --mandir=/usr/share/man \
             --enable-libsodium --with-sqlite3 --enable-tools \
             --with-modules='bind gsqlite3' \
