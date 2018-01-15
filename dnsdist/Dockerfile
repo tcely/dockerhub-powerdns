@@ -35,7 +35,7 @@ LABEL maintainer="https://keybase.io/tcely"
 
 RUN apk --update upgrade && \
     apk add ca-certificates curl less man \
-        boost-program_options libressl libsodium lua net-snmp protobuf \
+        boost libressl libsodium lua net-snmp protobuf \
         libedit re2 && \
     rm -rf /var/cache/apk/*
 
