@@ -3,7 +3,6 @@ ARG AUTH_VERSION=4.1.0
 FROM alpine AS builder
 
 ARG AUTH_VERSION
-ARG EXTRA_KEY
 
 RUN apk --update upgrade && \
     apk add ca-certificates curl && \
@@ -12,11 +11,9 @@ RUN apk --update upgrade && \
       boost-dev libressl-dev libsodium-dev lua-dev net-snmp-dev protobuf-dev \
       mariadb-dev postgresql-dev sqlite-dev && \
     curl -RL -O "https://downloads.powerdns.com/releases/pdns-${AUTH_VERSION}.tar.bz2{.asc,}" && \
-    curl -RL -o SigningKeys 'https://powerdns.com/powerdns-keyblock.asc' && \
     mkdir -v -m 0700 -p /root/.gnupg && \
-    gpg2 --no-options --verbose --keyid-format 0xlong --import SigningKeys && rm -f SigningKeys && \
-    ( [ -z "${EXTRA_KEY}" ] || gpg2 --no-options --verbose --keyid-format 0xlong --recv-key "${EXTRA_KEY}" ) && \
-    gpg2 --no-options --verbose --keyid-format 0xlong --verify *.asc && \
+    gpg2 --no-options --verbose --keyid-format 0xlong --keyserver-options auto-key-retrieve=true \
+        --verify *.asc && \
     rm -rf /root/.gnupg *.asc && \
     tar -xpf "pdns-${AUTH_VERSION}.tar.bz2" && \
     rm -f "pdns-${AUTH_VERSION}.tar.bz2" && \
