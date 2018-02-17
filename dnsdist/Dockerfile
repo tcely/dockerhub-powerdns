@@ -1,15 +1,14 @@
-ARG DNSDIST_VERSION=1.2.1
-
 FROM alpine AS builder
 
 ARG DNSDIST_VERSION
 
 RUN apk --update upgrade && \
-    apk add ca-certificates curl && \
+    apk add ca-certificates curl jq && \
     apk add --virtual .build-depends \
       file gnupg g++ make \
       boost-dev libressl-dev libsodium-dev lua-dev net-snmp-dev protobuf-dev \
       libedit-dev re2-dev && \
+    [ -n "$DNSDIST_VERSION" ] || { curl -sSL 'https://api.github.com/repos/PowerDNS/pdns/tags?per_page=100' | jq -r '[.[]["name"]|select(contains("dnsdist-"))|ltrimstr("dnsdist-")|select(true != contains("-"))][0]|"DNSDIST_VERSION="+.' > /tmp/latest-dnsdist-tag.sh && . /tmp/latest-dnsdist-tag.sh; } && \
     curl -RL -O "https://downloads.powerdns.com/releases/dnsdist-${DNSDIST_VERSION}.tar.bz2{.asc,}" && \
     mkdir -v -m 0700 -p /root/.gnupg && \
     gpg2 --no-options --verbose --keyid-format 0xlong --keyserver-options auto-key-retrieve=true \

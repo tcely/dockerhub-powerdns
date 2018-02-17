@@ -1,15 +1,14 @@
-ARG AUTH_VERSION=4.1.0
-
 FROM alpine AS builder
 
 ARG AUTH_VERSION
 
 RUN apk --update upgrade && \
-    apk add ca-certificates curl && \
+    apk add ca-certificates curl jq && \
     apk add --virtual .build-depends \
       file gnupg g++ make \
       boost-dev libressl-dev libsodium-dev lua-dev net-snmp-dev protobuf-dev \
       mariadb-dev postgresql-dev sqlite-dev && \
+    [ -n "$AUTH_VERSION" ] || { curl -sSL 'https://api.github.com/repos/PowerDNS/pdns/tags?per_page=100' | jq -r '[.[]["name"]|select(contains("auth-"))|ltrimstr("auth-")|select(true != contains("-"))][0]|"AUTH_VERSION="+.' > /tmp/latest-auth-tag.sh && . /tmp/latest-auth-tag.sh; } && \
     curl -RL -O "https://downloads.powerdns.com/releases/pdns-${AUTH_VERSION}.tar.bz2{.asc,}" && \
     mkdir -v -m 0700 -p /root/.gnupg && \
     gpg2 --no-options --verbose --keyid-format 0xlong --keyserver-options auto-key-retrieve=true \
