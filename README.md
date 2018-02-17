@@ -1,5 +1,8 @@
 # dockerhub-powerdns
-PowerDNS docker images built on alpine
+Docker images of PowerDNS programs built on Alpine Linux
+- https://hub.docker.com/r/tcely/dnsdist/
+- https://hub.docker.com/r/tcely/powerdns-recursor/
+- https://hub.docker.com/r/tcely/powerdns-server/
 
 ## Examples of using these images
 
