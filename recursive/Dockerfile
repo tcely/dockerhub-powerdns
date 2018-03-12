@@ -9,8 +9,5 @@ RUN apk --update upgrade && \
         && \
     rm -rf /var/cache/apk/*
 
-RUN addgroup -S pdns-recursor && \
-    adduser -S -D -G pdns-recursor pdns-recursor
-
 ENTRYPOINT ["/usr/sbin/pdns_recursor"]
 CMD ["--help"]
