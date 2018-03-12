@@ -25,6 +25,8 @@ RUN apk --update upgrade && \
     ) && \
     apk del --purge .build-depends && rm -rf /var/cache/apk/*
 
+# No aport for dnsdist yet.
+# See https://github.com/alpinelinux/aports/pull/3321
 FROM alpine
 LABEL maintainer="https://keybase.io/tcely"
 
