@@ -19,7 +19,7 @@ RUN apk --update upgrade && \
     ( \
         cd "dnsdist-${DNSDIST_VERSION}" && \
         ./configure --sysconfdir=/etc/dnsdist --mandir=/usr/share/man \
-            --enable-dnscrypt --enable-libsodium --enable-re2 --with-net-snmp && \
+            --enable-dnscrypt --enable-dns-over-tls --enable-libsodium --enable-re2 --with-net-snmp && \
         make -j 2 && \
         make install-strip \
     ) && \
