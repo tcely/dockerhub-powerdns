@@ -34,7 +34,7 @@ LABEL maintainer="https://keybase.io/tcely"
 RUN apk --update upgrade && \
     apk add ca-certificates curl less man \
         boost libressl libsodium lua net-snmp protobuf \
-        sqlite-libs && \
+        mariadb-client-libs postgresql-libs sqlite-libs && \
     rm -rf /var/cache/apk/*
 
 ENV PAGER less
