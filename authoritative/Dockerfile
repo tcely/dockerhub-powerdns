@@ -33,7 +33,8 @@ LABEL maintainer="https://keybase.io/tcely"
 
 RUN apk --update upgrade && \
     apk add ca-certificates curl less man \
-        boost libressl libsodium lua net-snmp protobuf \
+        boost boost-program_options libressl \
+        libsodium lua net-snmp protobuf \
         mariadb-client-libs libpq sqlite-libs && \
     rm -rf /var/cache/apk/*
 
