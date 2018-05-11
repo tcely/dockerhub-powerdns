@@ -8,7 +8,7 @@ RUN apk --update upgrade && \
       file gnupg g++ make \
       boost-dev libressl-dev libsodium-dev lua-dev net-snmp-dev protobuf-dev \
       && \
-    [ -n "$RECURSOR_VERSION" ] || { curl -sSL 'https://api.github.com/repos/PowerDNS/pdns/tags?per_page=100' | jq -r '[.[]["name"]|select(contains("rec-"))|ltrimstr("rec-")|select(true != contains("-"))][0]|"RECURSOR_VERSION="+.' > /tmp/latest-rec-tag.sh && . /tmp/latest-rec-tag.sh; } && \
+    [ -n "$RECURSOR_VERSION" ] || { curl -sSL 'https://api.github.com/repos/PowerDNS/pdns/tags?per_page=100&page={1,2}' | jq -rs '[.[][]]|map(select(has("name")))|map(select(.name|contains("rec-")))|map(.version=(.name|ltrimstr("rec-")))|map(select(true != (.version|contains("-"))))|max_by(.version)|"RECURSOR_VERSION="+.version' > /tmp/latest-rec-tag.sh && . /tmp/latest-rec-tag.sh; } && \
     curl -RL -O "https://downloads.powerdns.com/releases/pdns-recursor-${RECURSOR_VERSION}.tar.bz2{.asc,}" && \
     mkdir -v -m 0700 -p /root/.gnupg && \
     gpg2 --no-options --verbose --keyid-format 0xlong --keyserver-options auto-key-retrieve=true \
