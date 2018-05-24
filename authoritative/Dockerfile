@@ -9,6 +9,7 @@ RUN apk --update upgrade && \
         pdns-backend-mysql pdns-backend-pgsql \
         pdns-backend-lua pdns-backend-pipe \
         pdns-backend-random pdns-backend-remote \
+        pdns-backend-geoip \
         pdns-tools pdns-doc \
         && \
     rm -rf /var/cache/apk/*
