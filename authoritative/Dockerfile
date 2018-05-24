@@ -9,11 +9,14 @@ RUN apk --update upgrade && \
       boost-dev libressl-dev libsodium-dev lua-dev net-snmp-dev protobuf-dev \
       mariadb-dev postgresql-dev sqlite-dev geoip-dev yaml-cpp-dev && \
     [ -n "$AUTH_VERSION" ] || { curl -sSL 'https://api.github.com/repos/PowerDNS/pdns/tags?per_page=100&page={1,2}' | jq -rs '[.[][]]|map(select(has("name")))|map(select(.name|contains("auth-")))|map(.version=(.name|ltrimstr("auth-")))|map(select(true != (.version|contains("-"))))|max_by(.version)|"AUTH_VERSION="+.version' > /tmp/latest-auth-tag.sh && . /tmp/latest-auth-tag.sh; } && \
-    curl -RL -O "https://downloads.powerdns.com/releases/pdns-${AUTH_VERSION}.tar.bz2{.asc,}" && \
     mkdir -v -m 0700 -p /root/.gnupg && \
+    curl -RL -O 'https://www.powerdns.com/powerdns-keyblock.asc' && \
     gpg2 --no-options --verbose --keyid-format 0xlong --keyserver-options auto-key-retrieve=true \
-        --verify *.asc && \
-    rm -rf /root/.gnupg *.asc && \
+        --import *.asc && \
+    curl -RL -O "https://downloads.powerdns.com/releases/pdns-${AUTH_VERSION}.tar.bz2{.asc,.sig,}" && \
+    gpg2 --no-options --verbose --keyid-format 0xlong --keyserver-options auto-key-retrieve=true \
+        --verify *.sig && \
+    rm -rf /root/.gnupg *.asc *.sig && \
     tar -xpf "pdns-${AUTH_VERSION}.tar.bz2" && \
     rm -f "pdns-${AUTH_VERSION}.tar.bz2" && \
     ( \
