@@ -18,7 +18,6 @@ RUN apk --update upgrade && \
     rm -f "pdns-${AUTH_VERSION}.tar.bz2" && \
     ( \
         cd "pdns-${AUTH_VERSION}" && \
-        curl -RL -o 'pdns/mplexer.hh' 'https://github.com/PowerDNS/pdns/raw/rec-4.1.0/pdns/mplexer.hh' && \
         ./configure --sysconfdir=/etc/pdns --mandir=/usr/share/man \
             --enable-libsodium --with-sqlite3 --enable-tools \
             --with-modules='bind gsqlite3' \
