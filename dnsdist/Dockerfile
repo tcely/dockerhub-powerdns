@@ -3,6 +3,9 @@ LABEL maintainer="https://keybase.io/tcely"
 
 ENV PAGER=less
 
+# testing repository is not enabled in the current alpine:edge image
+RUN sed -i.orig -e '/community$/{p;s/community$/testing/;}' /etc/apk/repositories
+
 RUN apk --update upgrade && \
     apk add less man \
         dnsdist-luajit dnsdist-doc \
