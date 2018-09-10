@@ -22,6 +22,7 @@ RUN apk --update upgrade && \
     ( \
         cd "pdns-recursor-${RECURSOR_VERSION}" && \
         curl -sSL 'https://github.com/PowerDNS/pdns/commit/1648b8ff39c705fdee526cd73bf2652982b80087.patch' | patch -p 2 && \
+        curl -sSL 'https://github.com/PowerDNS/pdns/commit/b141d89b27e52c3a8e76ca79ec5201d001f4fce9.patch' | patch -p 2 && \
         ./configure --sysconfdir=/etc/pdns-recursor --mandir=/usr/share/man \
             && \
         make -j 2 && \
