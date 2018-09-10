@@ -8,7 +8,7 @@ RUN sed -i.orig -e '/community$/{p;s/community$/testing/;}' /etc/apk/repositorie
 
 RUN apk --update upgrade && \
     apk add less man \
-        dnsdist dnsdist-doc \
+        dnsdist-luajit dnsdist-doc \
         && \
     rm -rf /var/cache/apk/*
 
