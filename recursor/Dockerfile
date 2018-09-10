@@ -5,7 +5,7 @@ ARG RECURSOR_VERSION
 RUN apk --update upgrade && \
     apk add ca-certificates curl jq && \
     apk add --virtual .build-depends \
-      file gnupg g++ make \
+      file gnupg g++ make patch \
       boost-dev libressl-dev libsodium-dev lua-dev net-snmp-dev protobuf-dev \
       && \
     [ -n "$RECURSOR_VERSION" ] || { curl -sSL 'https://api.github.com/repos/PowerDNS/pdns/tags?per_page=100&page={1,2}' | jq -rs '[.[][]]|map(select(has("name")))|map(select(.name|contains("rec-")))|map(.version=(.name|ltrimstr("rec-")))|map(select(true != (.version|contains("-"))))|max_by(.version)|"RECURSOR_VERSION="+.version' > /tmp/latest-rec-tag.sh && . /tmp/latest-rec-tag.sh; } && \
@@ -21,6 +21,7 @@ RUN apk --update upgrade && \
     rm -f "pdns-recursor-${RECURSOR_VERSION}.tar.bz2" && \
     ( \
         cd "pdns-recursor-${RECURSOR_VERSION}" && \
+        curl -sSL 'https://github.com/PowerDNS/pdns/commit/1648b8ff39c705fdee526cd73bf2652982b80087.patch' | patch -p 2 && \
         ./configure --sysconfdir=/etc/pdns-recursor --mandir=/usr/share/man \
             && \
         make -j 2 && \
