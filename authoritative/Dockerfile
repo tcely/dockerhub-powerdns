@@ -39,7 +39,7 @@ RUN apk --update upgrade && \
     apk add ca-certificates curl less man \
         boost boost-program_options \
         libressl libsodium lua net-snmp protobuf \
-        mariadb-client-libs libpq sqlite-libs \
+        mariadb-connector-c libpq sqlite-libs \
         geoip yaml-cpp && \
     rm -rf /var/cache/apk/*
 
