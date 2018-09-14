@@ -1,4 +1,4 @@
-FROM alpine
+FROM alpine:3.7
 
 ENV REFRESHED_AT="2017-11-27" \
     POWERDNS_VERSION="4.0.5" \
