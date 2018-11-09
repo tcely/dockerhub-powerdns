@@ -10,7 +10,7 @@ RUN apk --update upgrade && \
       libedit-dev re2-dev && \
     [ -n "$DNSDIST_VERSION" ] || { curl -sSL 'https://api.github.com/repos/PowerDNS/pdns/tags?per_page=100&page={1,2}' | jq -rs '[.[][]]|map(select(has("name")))|map(select(.name|contains("dnsdist-")))|map(.version=(.name|ltrimstr("dnsdist-")))|map(select(true != (.version|contains("-"))))|max_by(.version)|"DNSDIST_VERSION="+.version' > /tmp/latest-dnsdist-tag.sh && . /tmp/latest-dnsdist-tag.sh; } && \
     mkdir -v -m 0700 -p /root/.gnupg && \
-    curl -RL -O 'https://www.powerdns.com/powerdns-keyblock.asc' && \
+    curl -RL -O 'https://dnsdist.org/_static/dnsdist-keyblock.asc' && \
     gpg2 --no-options --verbose --keyid-format 0xlong --keyserver-options auto-key-retrieve=true \
         --import *.asc && \
     curl -RL -O "https://downloads.powerdns.com/releases/dnsdist-${DNSDIST_VERSION}.tar.bz2{.asc,.sig,}" && \
