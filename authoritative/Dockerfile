@@ -5,7 +5,7 @@ ARG AUTH_VERSION
 RUN apk --update upgrade && \
     apk add ca-certificates curl jq && \
     apk add --virtual .build-depends \
-      file gnupg g++ make patch \
+      file gnupg g++ make \
       boost-dev libressl-dev libsodium-dev lua-dev net-snmp-dev protobuf-dev \
       mariadb-dev postgresql-dev sqlite-dev geoip-dev yaml-cpp-dev && \
     [ -n "$AUTH_VERSION" ] || { curl -sSL 'https://api.github.com/repos/PowerDNS/pdns/tags?per_page=100&page={1,2}' | jq -rs '[.[][]]|map(select(has("name")))|map(select(.name|contains("auth-")))|map(.version=(.name|ltrimstr("auth-")))|map(select(true != (.version|contains("-"))))|max_by(.version)|"AUTH_VERSION="+.version' > /tmp/latest-auth-tag.sh && . /tmp/latest-auth-tag.sh; } && \
@@ -21,7 +21,6 @@ RUN apk --update upgrade && \
     rm -f "pdns-${AUTH_VERSION}.tar.bz2" && \
     ( \
         cd "pdns-${AUTH_VERSION}" && \
-        curl -sSL 'https://github.com/PowerDNS/pdns/commit/1648b8ff39c705fdee526cd73bf2652982b80087.patch' | patch -p 1 && \
         ./configure --sysconfdir=/etc/pdns --mandir=/usr/share/man \
             --enable-libsodium --with-sqlite3 --enable-tools \
             --with-modules='bind gsqlite3' \
