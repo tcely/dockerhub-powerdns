@@ -22,7 +22,6 @@ RUN apk --update upgrade && \
     ( \
         cd "pdns-${AUTH_VERSION}" && \
         curl -sSL 'https://github.com/PowerDNS/pdns/commit/1648b8ff39c705fdee526cd73bf2652982b80087.patch' | patch -p 1 && \
-        curl -sSL 'https://github.com/PowerDNS/pdns/commit/b141d89b27e52c3a8e76ca79ec5201d001f4fce9.patch' | patch -p 1 && \
         ./configure --sysconfdir=/etc/pdns --mandir=/usr/share/man \
             --enable-libsodium --with-sqlite3 --enable-tools \
             --with-modules='bind gsqlite3' \
