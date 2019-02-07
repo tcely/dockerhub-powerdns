@@ -6,7 +6,7 @@ RUN apk --update upgrade && \
     apk add ca-certificates curl jq && \
     apk add --virtual .build-depends \
       file gnupg g++ make \
-      boost-dev libressl-dev libsodium-dev lua-dev net-snmp-dev protobuf-dev \
+      boost-dev openssl-dev libsodium-dev lua-dev net-snmp-dev protobuf-dev \
       && \
     [ -n "$RECURSOR_VERSION" ] || { curl -sSL 'https://api.github.com/repos/PowerDNS/pdns/tags?per_page=100&page={1,2}' | jq -rs '[.[][]]|map(select(has("name")))|map(select(.name|contains("rec-")))|map(.version=(.name|ltrimstr("rec-")))|map(select(true != (.version|contains("-"))))|max_by(.version)|"RECURSOR_VERSION="+.version' > /tmp/latest-rec-tag.sh && . /tmp/latest-rec-tag.sh; } && \
     mkdir -v -m 0700 -p /root/.gnupg && \
@@ -33,7 +33,7 @@ LABEL maintainer="https://keybase.io/tcely"
 
 RUN apk --update upgrade && \
     apk add ca-certificates curl less man \
-        boost libressl libsodium lua net-snmp protobuf \
+        boost openssl libsodium lua net-snmp protobuf \
         && \
     rm -rf /var/cache/apk/*
 
