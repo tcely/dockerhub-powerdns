@@ -6,7 +6,7 @@ RUN apk --update upgrade && \
     apk add ca-certificates curl jq && \
     apk add --virtual .build-depends \
       file gnupg g++ make \
-      boost-dev libressl-dev libsodium-dev lua-dev net-snmp-dev protobuf-dev \
+      boost-dev openssl-dev libsodium-dev lua-dev net-snmp-dev protobuf-dev \
       mariadb-dev postgresql-dev sqlite-dev geoip-dev yaml-cpp-dev && \
     [ -n "$AUTH_VERSION" ] || { curl -sSL 'https://api.github.com/repos/PowerDNS/pdns/tags?per_page=100&page={1,2}' | jq -rs '[.[][]]|map(select(has("name")))|map(select(.name|contains("auth-")))|map(.version=(.name|ltrimstr("auth-")))|map(select(true != (.version|contains("-"))))|max_by(.version)|"AUTH_VERSION="+.version' > /tmp/latest-auth-tag.sh && . /tmp/latest-auth-tag.sh; } && \
     mkdir -v -m 0700 -p /root/.gnupg && \
@@ -36,7 +36,7 @@ LABEL maintainer="https://keybase.io/tcely"
 RUN apk --update upgrade && \
     apk add ca-certificates curl less man \
         boost boost-program_options \
-        libressl libsodium lua net-snmp protobuf \
+        openssl libsodium lua net-snmp protobuf \
         mariadb-connector-c libpq sqlite-libs \
         geoip yaml-cpp && \
     rm -rf /var/cache/apk/*
