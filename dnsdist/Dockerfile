@@ -6,7 +6,7 @@ RUN apk --update upgrade && \
     apk add ca-certificates curl jq && \
     apk add --virtual .build-depends \
       file gnupg g++ make \
-      boost-dev libressl-dev libsodium-dev lua-dev net-snmp-dev protobuf-dev \
+      boost-dev openssl-dev libsodium-dev lua-dev net-snmp-dev protobuf-dev \
       libedit-dev re2-dev && \
     [ -n "$DNSDIST_VERSION" ] || { curl -sSL 'https://api.github.com/repos/PowerDNS/pdns/tags?per_page=100&page={1,2}' | jq -rs '[.[][]]|map(select(has("name")))|map(select(.name|contains("dnsdist-")))|map(.version=(.name|ltrimstr("dnsdist-")))|map(select(true != (.version|contains("-"))))|max_by(.version)|"DNSDIST_VERSION="+.version' > /tmp/latest-dnsdist-tag.sh && . /tmp/latest-dnsdist-tag.sh; } && \
     mkdir -v -m 0700 -p /root/.gnupg && \
@@ -33,7 +33,7 @@ LABEL maintainer="https://keybase.io/tcely"
 
 RUN apk --update upgrade && \
     apk add ca-certificates curl less man \
-        libressl libsodium lua net-snmp protobuf \
+        openssl libsodium lua net-snmp protobuf \
         libedit re2 && \
     rm -rf /var/cache/apk/*
 
