@@ -53,7 +53,8 @@ COPY --from=builder /usr/share/man/man1 /usr/share/man/man1/
 COPY --from=builder /usr/local/share/doc/pdns /usr/local/share/doc/pdns
 COPY --from=builder /etc/pdns /etc/pdns/
 
-RUN cp -p /etc/pdns/pdns.conf-dist /etc/pdns/pdns.conf
+RUN cp -p /etc/pdns/pdns.conf-dist /etc/pdns/pdns.conf && \
+    /usr/local/sbin/pdns_server --version || [ $? -eq 99 ]
 
 ENTRYPOINT ["/usr/local/sbin/pdns_server"]
 CMD ["--help"]
