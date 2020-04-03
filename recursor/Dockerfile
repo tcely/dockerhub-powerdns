@@ -33,7 +33,7 @@ LABEL maintainer="https://keybase.io/tcely"
 
 RUN apk --update upgrade && \
     apk add ca-certificates curl less man \
-        boost-context \
+        boost-context boost-filesystem \
         openssl libsodium lua net-snmp protobuf \
         && \
     rm -rf /var/cache/apk/*
