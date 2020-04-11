@@ -48,7 +48,7 @@ COPY --from=builder /usr/local/sbin /usr/local/sbin/
 COPY --from=builder /usr/share/man/man1 /usr/share/man/man1/
 COPY --from=builder /etc/pdns-recursor /etc/pdns-recursor/
 
-RUN install -d -m 00770 -o root -g pdns-recursor /var/run/pdns-recursor
+RUN install -v -d -m 00770 -o root -g pdns-recursor /var/run/pdns-recursor && ls -l /var/run
 
 RUN cp -p /etc/pdns-recursor/recursor.conf-dist /etc/pdns-recursor/recursor.conf && \
     /usr/local/sbin/pdns_recursor --version
