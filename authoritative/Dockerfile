@@ -53,7 +53,7 @@ COPY --from=builder /usr/share/man/man1 /usr/share/man/man1/
 COPY --from=builder /usr/local/share/doc/pdns /usr/local/share/doc/pdns
 COPY --from=builder /etc/pdns /etc/pdns/
 
-RUN install -v -d -m 00770 -o root -g pdns /var/run/pdns && ls -l /var/run
+RUN install -v -d -m 00770 -o root -g pdns /var/run/pdns && ls -l /var/run/
 
 RUN cp -p /etc/pdns/pdns.conf-dist /etc/pdns/pdns.conf && \
     /usr/local/sbin/pdns_server --version || [ $? -eq 99 ]
