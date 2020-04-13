@@ -14,7 +14,7 @@ Docker images of PowerDNS software built on Alpine Linux
     EXPOSE 53/tcp 53/udp
 
     ENTRYPOINT ["/usr/local/bin/dnsdist", "--uid", "dnsdist", "--gid", "dnsdist"]
-    CMD ["--disable-syslog"]
+    CMD ["--supervised", "--disable-syslog"]
   ```
 * ### In your `docker-compose.yml`
   ```yaml
