@@ -6,7 +6,7 @@ RUN apk --update upgrade && \
     apk add ca-certificates curl jq && \
     apk add --virtual .build-depends \
       file gnupg g++ make \
-      boost-dev openssl-dev libsodium-dev lua-dev lmdb-dev net-snmp-dev protobuf-dev \
+      boost-dev openssl-dev libsodium-dev lmdb-dev lua-dev net-snmp-dev protobuf-dev \
       curl-dev mariadb-dev postgresql-dev sqlite-dev geoip-dev yaml-cpp-dev && \
     [ -n "$AUTH_VERSION" ] || { curl -sSL 'https://api.github.com/repos/PowerDNS/pdns/tags?per_page=100&page={1,2}' | jq -rs '[.[][]]|map(select(has("name")))|map(select(.name|contains("auth-")))|map(.version=(.name|ltrimstr("auth-")))|map(select(true != (.version|contains("-"))))|map(.version)|"AUTH_VERSION="+.[0]' > /tmp/latest-auth-tag.sh && . /tmp/latest-auth-tag.sh; } && \
     mkdir -v -m 0700 -p /root/.gnupg && \
@@ -24,7 +24,7 @@ RUN apk --update upgrade && \
         ./configure --sysconfdir=/etc/pdns --mandir=/usr/share/man \
             --enable-libsodium --with-sqlite3 --enable-tools \
             --with-modules='bind gsqlite3' \
-            --with-dynmodules='geoip gmysql gpgsql lua2 lmdb pipe random remote' && \
+            --with-dynmodules='geoip gmysql gpgsql lmdb lua2 pipe random remote' && \
         make -j 2 && \
         make install-strip \
     ) && \
@@ -36,7 +36,7 @@ LABEL maintainer="https://keybase.io/tcely"
 RUN apk --update upgrade && \
     apk add ca-certificates curl less man \
         boost-program_options \
-        openssl libsodium lua lmdb net-snmp protobuf \
+        openssl libsodium lmdb lua net-snmp protobuf \
         mariadb-connector-c libpq sqlite-libs \
         geoip yaml-cpp && \
     rm -rf /var/cache/apk/*
