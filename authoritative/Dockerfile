@@ -7,7 +7,7 @@ RUN apk --update upgrade && \
     apk add less mdocml \
         pdns-backend-bind pdns-backend-sqlite3 \
         pdns-backend-mysql pdns-backend-pgsql \
-        pdns-backend-lua pdns-backend-pipe \
+        pdns-backend-pipe \
         pdns-backend-random pdns-backend-remote \
         pdns-backend-geoip \
         pdns-tools pdns-doc \
