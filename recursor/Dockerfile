@@ -32,7 +32,7 @@ FROM alpine
 LABEL maintainer="https://keybase.io/tcely"
 
 RUN apk --update upgrade && \
-    apk add ca-certificates curl less man \
+    apk add ca-certificates curl less mdocml \
         boost-context boost-filesystem \
         openssl libsodium lua net-snmp protobuf \
         && \
