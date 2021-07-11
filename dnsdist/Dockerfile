@@ -1,4 +1,4 @@
-FROM alpine AS builder
+FROM tcely/alpine-stable AS builder
 
 ARG DNSDIST_VERSION
 
