@@ -24,7 +24,7 @@ RUN apk --update upgrade && \
         ./configure --sysconfdir=/etc/pdns --mandir=/usr/share/man \
             --enable-libsodium --with-sqlite3 --enable-tools \
             --with-modules='bind gsqlite3' \
-            --with-dynmodules='geoip gmysql gpgsql lmdb lua2 pipe random remote' && \
+            --with-dynmodules='geoip gmysql gpgsql lmdb lua2 pipe remote' && \
         make -j 2 && \
         make install-strip \
     ) && \
