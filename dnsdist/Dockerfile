@@ -1,4 +1,4 @@
-FROM alpine AS builder
+FROM alpine:3 AS builder
 
 ARG DNSDIST_VERSION
 
@@ -28,7 +28,7 @@ RUN apk --update upgrade && \
     ) && \
     apk del --purge .build-depends && rm -rf /var/cache/apk/*
 
-FROM alpine
+FROM alpine:3
 LABEL maintainer="https://keybase.io/tcely"
 
 RUN apk --update upgrade && \
