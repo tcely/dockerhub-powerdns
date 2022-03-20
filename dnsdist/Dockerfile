@@ -45,7 +45,7 @@ RUN addgroup -g 1000 -S dnsdist && \
 COPY --from=builder /usr/local/bin /usr/local/bin/
 COPY --from=builder /usr/share/man/man1 /usr/share/man/man1/
 
-RUN /usr/local/bin/dnsdist --version
+RUN dnsdist --version
 
-ENTRYPOINT ["/usr/local/bin/dnsdist"]
+ENTRYPOINT ["dnsdist"]
 CMD ["--help"]
