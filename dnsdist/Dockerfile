@@ -10,9 +10,9 @@ RUN apk upgrade --no-cache && \
         libedit-dev re2-dev h2o-dev && \
     [ -n "$DNSDIST_VERSION" ] || { curl -sSL 'https://api.github.com/repos/PowerDNS/pdns/tags?per_page=100&page={1,2,3}' | jq -rs '[.[][]]|map(select(has("name")))|map(select(.name|contains("dnsdist-")))|map(.version=(.name|ltrimstr("dnsdist-")))|map(select(true != (.version|contains("-"))))|map(.version)|"DNSDIST_VERSION="+.[0]' > /tmp/latest-dnsdist-tag.sh && . /tmp/latest-dnsdist-tag.sh; } && \
     mkdir -v -m 0700 -p /root/.gnupg && \
-    curl -RL -O 'https://dnsdist.org/_static/dnsdist-keyblock.asc' && \
+    curl -sSRL -O 'https://dnsdist.org/_static/dnsdist-keyblock.asc' && \
     gpg2 --no-options --verbose --keyid-format 0xlong --keyserver-options auto-key-retrieve=true --import *.asc && \
-    curl -RL -O "https://downloads.powerdns.com/releases/dnsdist-${DNSDIST_VERSION}.tar.bz2{.asc,.sig,}" && \
+    curl -sSRL -O "https://downloads.powerdns.com/releases/dnsdist-${DNSDIST_VERSION}.tar.bz2{.asc,.sig,}" && \
     gpg2 --no-options --verbose --keyid-format 0xlong --keyserver-options auto-key-retrieve=true --verify *.sig && \
     tar -xpf "dnsdist-${DNSDIST_VERSION}.tar.bz2" && \
     cd "dnsdist-${DNSDIST_VERSION}" && \
