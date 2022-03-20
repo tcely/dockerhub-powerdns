@@ -2,40 +2,41 @@ FROM alpine:3 AS builder
 
 ARG DNSDIST_VERSION
 
-RUN apk --update upgrade && \
-    apk add ca-certificates curl jq && \
-    apk add --virtual .build-depends \
-      file gnupg g++ make \
-      boost-dev openssl-dev libsodium-dev lua-dev net-snmp-dev protobuf-dev \
-      libedit-dev re2-dev h2o-dev && \
+RUN apk upgrade --no-cache && \
+    apk add --no-cache \
+        ca-certificates curl jq \
+        file gnupg g++ make \
+        boost-dev openssl-dev libsodium-dev lua-dev net-snmp-dev protobuf-dev \
+        libedit-dev re2-dev h2o-dev && \
     [ -n "$DNSDIST_VERSION" ] || { curl -sSL 'https://api.github.com/repos/PowerDNS/pdns/tags?per_page=100&page={1,2,3}' | jq -rs '[.[][]]|map(select(has("name")))|map(select(.name|contains("dnsdist-")))|map(.version=(.name|ltrimstr("dnsdist-")))|map(select(true != (.version|contains("-"))))|map(.version)|"DNSDIST_VERSION="+.[0]' > /tmp/latest-dnsdist-tag.sh && . /tmp/latest-dnsdist-tag.sh; } && \
     mkdir -v -m 0700 -p /root/.gnupg && \
     curl -RL -O 'https://dnsdist.org/_static/dnsdist-keyblock.asc' && \
-    gpg2 --no-options --verbose --keyid-format 0xlong --keyserver-options auto-key-retrieve=true \
-        --import *.asc && \
+    gpg2 --no-options --verbose --keyid-format 0xlong --keyserver-options auto-key-retrieve=true --import *.asc && \
     curl -RL -O "https://downloads.powerdns.com/releases/dnsdist-${DNSDIST_VERSION}.tar.bz2{.asc,.sig,}" && \
-    gpg2 --no-options --verbose --keyid-format 0xlong --keyserver-options auto-key-retrieve=true \
-        --verify *.sig && \
-    rm -rf /root/.gnupg *.asc *.sig && \
+    gpg2 --no-options --verbose --keyid-format 0xlong --keyserver-options auto-key-retrieve=true --verify *.sig && \
     tar -xpf "dnsdist-${DNSDIST_VERSION}.tar.bz2" && \
-    rm -f "dnsdist-${DNSDIST_VERSION}.tar.bz2" && \
-    ( \
-        cd "dnsdist-${DNSDIST_VERSION}" && \
-        ./configure --sysconfdir=/etc/dnsdist --mandir=/usr/share/man \
-            --enable-dnscrypt --enable-dns-over-tls --enable-dns-over-https --with-libsodium --with-re2 --with-net-snmp && \
-        make -j 2 && \
-        make install-strip \
-    ) && \
-    apk del --purge .build-depends && rm -rf /var/cache/apk/*
+    cd "dnsdist-${DNSDIST_VERSION}" && \
+    ./configure \
+        --sysconfdir=/etc/dnsdist \
+        --mandir=/usr/share/man \
+        --enable-dnscrypt \
+        --enable-dns-over-tls \
+        --enable-dns-over-https \
+        --with-libsodium \
+        --with-re2 \
+        --with-net-snmp && \
+    make -j 2 && \
+    make install-strip
+
 
 FROM alpine:3
 LABEL maintainer="https://keybase.io/tcely"
 
-RUN apk --update upgrade && \
-    apk add ca-certificates curl less mdocml \
+RUN apk upgrade --no-cache && \
+    apk add --no-cache \
+        ca-certificates curl less mdocml \
         openssl libsodium lua net-snmp protobuf \
-        libedit re2 h2o && \
-    rm -rf /var/cache/apk/*
+        libedit re2 h2o
 
 ENV PAGER less
 
