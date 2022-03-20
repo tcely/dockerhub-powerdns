@@ -40,8 +40,8 @@ RUN apk upgrade --no-cache && \
 
 ENV PAGER less
 
-RUN addgroup -S dnsdist && \
-    adduser -S -D -G dnsdist dnsdist
+RUN addgroup -g 1000 -S dnsdist && \
+    adduser -u 1000 -G dnsdist -S -D -H dnsdist
 
 COPY --from=builder /usr/local/bin /usr/local/bin/
 COPY --from=builder /usr/share/man/man1 /usr/share/man/man1/
