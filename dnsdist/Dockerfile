@@ -7,7 +7,7 @@ RUN apk --update upgrade && \
     apk add --virtual .build-depends \
       file gnupg g++ make \
       boost-dev openssl-dev libsodium-dev lua-dev net-snmp-dev protobuf-dev \
-      libedit-dev re2-dev && \
+      libedit-dev re2-dev nghttp2 nghttp2-dev h2o-dev h2o && \
     [ -n "$DNSDIST_VERSION" ] || { curl -sSL 'https://api.github.com/repos/PowerDNS/pdns/tags?per_page=100&page={1,2,3}' | jq -rs '[.[][]]|map(select(has("name")))|map(select(.name|contains("dnsdist-")))|map(.version=(.name|ltrimstr("dnsdist-")))|map(select(true != (.version|contains("-"))))|map(.version)|"DNSDIST_VERSION="+.[0]' > /tmp/latest-dnsdist-tag.sh && . /tmp/latest-dnsdist-tag.sh; } && \
     mkdir -v -m 0700 -p /root/.gnupg && \
     curl -RL -O 'https://dnsdist.org/_static/dnsdist-keyblock.asc' && \
@@ -22,7 +22,7 @@ RUN apk --update upgrade && \
     ( \
         cd "dnsdist-${DNSDIST_VERSION}" && \
         ./configure --sysconfdir=/etc/dnsdist --mandir=/usr/share/man \
-            --enable-dnscrypt --enable-dns-over-tls --with-libsodium --with-re2 --with-net-snmp && \
+            --enable-dnscrypt --enable-dns-over-tls --enable-dns-over-https --with-libsodium --with-re2 --with-net-snmp && \
         make -j 2 && \
         make install-strip \
     ) && \
@@ -34,7 +34,7 @@ LABEL maintainer="https://keybase.io/tcely"
 RUN apk --update upgrade && \
     apk add ca-certificates curl less mdocml \
         openssl libsodium lua net-snmp protobuf \
-        libedit re2 && \
+        libedit re2 h2o && \
     rm -rf /var/cache/apk/*
 
 ENV PAGER less
