@@ -10,8 +10,8 @@ on:
     - cron: '11 1 * * 1'
   push:
     branches: [ master ]
-  pull_request:
-    branches: [ master ]
+#  pull_request:
+#    branches: [ master ]
   workflow_dispatch:
 
 jobs:
@@ -44,8 +44,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-#        with:
-#          ref: master
 
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
