@@ -34,7 +34,7 @@ FROM alpine
 LABEL maintainer="https://keybase.io/tcely"
 
 RUN apk --update upgrade && \
-    apk add ca-certificates curl less mdocml \
+    apk add ca-certificates curl less mandoc \
         boost-program_options \
         openssl libsodium lmdb lua net-snmp protobuf \
         mariadb-connector-c libpq sqlite-libs \
