@@ -52,8 +52,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-        with:
-          ref: aports
 
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
