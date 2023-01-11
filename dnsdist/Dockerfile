@@ -7,7 +7,7 @@ ENV PAGER=less
 RUN sed -i.orig -e '/community$/{p;s/community$/testing/;}' /etc/apk/repositories
 
 RUN apk --update upgrade && \
-    apk add less mdocml \
+    apk add less mandoc \
         dnsdist dnsdist-doc \
         && \
     rm -rf /var/cache/apk/*

@@ -4,7 +4,7 @@ LABEL maintainer="https://keybase.io/tcely"
 ENV PAGER=less
 
 RUN apk --update upgrade && \
-    apk add less mdocml \
+    apk add less mandoc \
         pdns-backend-bind pdns-backend-sqlite3 \
         pdns-backend-mysql pdns-backend-pgsql \
         pdns-backend-pipe \

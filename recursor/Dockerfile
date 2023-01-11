@@ -4,7 +4,7 @@ LABEL maintainer="https://keybase.io/tcely"
 ENV PAGER=less
 
 RUN apk --update upgrade && \
-    apk add less mdocml \
+    apk add less mandoc \
         pdns-recursor pdns-recursor-doc \
         && \
     rm -rf /var/cache/apk/*
