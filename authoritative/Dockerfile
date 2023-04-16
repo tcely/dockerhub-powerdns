@@ -40,7 +40,7 @@ ARG LUA_VERSION
 
 RUN apk --update upgrade && \
     apk add ca-certificates curl less mandoc \
-        boost-program_options \
+        boost-program_options boost-serialization \
         openssl libsodium lmdb lua${LUA_VERSION}-libs net-snmp protobuf \
         mariadb-connector-c libpq sqlite-libs \
         geoip yaml-cpp && \
